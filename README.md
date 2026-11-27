@@ -23,8 +23,8 @@
    - Pure English UI, PAW fields, and screen messages (renders cleanly on stock English KSP without CJK font issues).
    - Uses `CultureInfo.InvariantCulture` for all coordinate parsing and persistence, preventing decimal-separator bugs on non-English OS locales.
 5. **Plug-and-Play ModuleManager & RO Patches**:
-   - Automatically adds `ModuleBargeAnchor` to `GravityIssue` ASOG (`LH_SPX_ASOG`), Jacklyn (`JACKLYN_LPV`), and any command part with `ASDS` in its title.
-   - Includes a bundled 1:1 real-scale **Realism Overhaul + RealAntennas** config for **ASOG** (`GameData/GravityIssue/Patches/RO_config.cfg`).
+   - Automatically adds `ModuleBargeAnchor` to `GravityIssue` ASOG (`LH_SPX_ASOG`), Jacklyn (`JACKLYN_LPV`), and any command part with `ASDS` in its title (`GameData/ASDSManager/Patches/ASOG_AnchorPatch.cfg`).
+   - Includes a bundled 1:1 real-scale **Realism Overhaul + RealAntennas** config for **ASOG** (`GameData/ASDSManager/Patches/ASOG_RO_config.cfg`).
 
 ---
 
@@ -32,24 +32,26 @@
 
 ### Required
 - **Kerbal Space Program**: 1.12.x
-- **ModuleManager** (required for `ASOG_AnchorPatch.cfg` and `RO_config.cfg`)
-- **[GravityIssue](https://spacedock.info/mod/3895/GravityIssue)** — provides the ASOG (`LH_SPX_ASOG`) drone ship model and part
+- **ModuleManager** (required for `ASOG_AnchorPatch.cfg` and `ASOG_RO_config.cfg`)
+- **[GravityIssue](https://spacedock.info/mod/3895/GravityIssue)** (CKAN: `GravityIssue`) — provides the ASOG (`LH_SPX_ASOG`) drone ship model and part
 
 ### Bundled Custom RO Configuration (Included in This Release)
-- **`GameData/GravityIssue/Patches/RO_config.cfg`** — custom Realism Overhaul & RealAntennas patch scaling ASOG to real-world Marmac 302 dimensions (`91.8 m × 44.4 m × 6.1 m`, `1,800 t`).
+- **`GameData/ASDSManager/Patches/ASOG_RO_config.cfg`** — custom Realism Overhaul & RealAntennas patch scaling ASOG to real-world Marmac 302 dimensions (`91.8 m × 44.4 m × 6.1 m`, `1,800 t`).
   - **Note**: RO configuration is provided for **ASOG (`LH_SPX_ASOG`) only**; Jacklyn / Javelin is **not** configured for Realism Overhaul.
   - Guarded with `:NEEDS[RealismOverhaul,GravityIssue]` and `:NEEDS[RealAntennas,GravityIssue]`, so it stays inactive on stock KSP installs.
 
 ### Optional
-- **[kOS-BoosterRecovery](https://github.com/tthirteenttt/kOS-BoosterRecovery)** — for automatic `asds_predicted.ks` coordinate generation and autonomous Falcon 9 booster landing
+- **[kOS](https://github.com/KSP-KOS/KOS)** & **[kOS-BoosterRecovery](https://github.com/tthirteenttt/kOS-BoosterRecovery)** — for automatic `asds_predicted.ks` coordinate generation and autonomous Falcon 9 booster landing
 
 ---
 
 ## Installation
 
 1. Install **ModuleManager** and **[GravityIssue](https://spacedock.info/mod/3895/GravityIssue)** into `<KSP_ROOT>/GameData/`.
-2. Copy `GameData/ASDSManager/` and `GameData/GravityIssue/` from this release into `<KSP_ROOT>/GameData/`.
+2. Download `ASDS-Manager-v1.0.1.zip` from [Releases](https://github.com/tthirteenttt/ASDS-Manager/releases) and extract `GameData/ASDSManager/` into `<KSP_ROOT>/GameData/`.
 3. Launch KSP and verify the **ASDS Manager** icon appears on the stock toolbar.
+
+*(Upgrading from v1.0.0: you may delete the old `GameData/GravityIssue/Patches/RO_config.cfg` if you previously copied it manually; it now lives cleanly under `GameData/ASDSManager/Patches/ASOG_RO_config.cfg`.)*
 
 ---
 
@@ -66,13 +68,13 @@
 
 ---
 
-## Building from Source
+## Building & Packaging from Source
 
 Requires .NET Framework 4.5 MSBuild (included with Windows) and KSP 1.12.x managed assemblies:
 ```powershell
-.\Tools\build.ps1 -Configuration Release -TargetKSP "<PATH_TO_YOUR_KSP>"
+.\Tools\build.ps1 -Configuration Release -TargetKSP "<PATH_TO_YOUR_KSP>" -PackageRelease -Version "1.0.1"
 ```
-The compiled `ASDSManager.dll` is automatically copied to `GameData/ASDSManager/Plugins/`.
+The compiled `ASDSManager.dll` is automatically copied to `GameData/ASDSManager/Plugins/`. Passing `-PackageRelease` generates a clean CKAN-compliant `ASDS-Manager-v<Version>.zip` containing only `GameData/ASDSManager/`.
 
 ---
 
